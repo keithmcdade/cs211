@@ -4,7 +4,6 @@
 using namespace std;
 
 bool valid(string s);
-bool is_negative(string s);
 string add(string s1, string s2);
 string add_negative(string s1, string s2);
 string subtract(string s1, string s2);
@@ -36,11 +35,6 @@ bool valid(string s) {
     // return false if number contains invalid characters or leading zeros
     regex number_regex("^(0|[1-9][0-9]*|-[1-9][0-9]*)$");
     return regex_search(s, number_regex);
-}
-
-bool is_negative(string s) {
-    if (s[0] == '-') return true;
-    return false;
 }
 
 string add(string s1, string s2) {
