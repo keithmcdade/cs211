@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <regex>
+#include "add.h"
 using namespace std;
 
 bool valid(string s);
