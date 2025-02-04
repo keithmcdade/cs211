@@ -34,13 +34,20 @@ bool valid(string s) {
     if ((s[0] == '-' && s.length() > 101) || s.length() > 100) return false;
 
     // return false if number contains invalid characters or leading zeros
-    regex number_regex("^(0|[1-9][0-9]*|-[1-9][0-9]*)$");
-    return regex_search(s, number_regex);
+    size_t found = s.find_first_not_of("-0123456789");
+    if (found != string::npos) return false;
+
+    found = s.find_first_not_of("0");
+    if (found != 0 && s.compare("0") != 0) return false;
+
+    found = s.rfind("-");
+    if ((found != 0 && found != string::npos) || s.compare("-0") == 0) return false;
+
+    return true;
 }
 
 string add(string s1, string s2) {
     // wrapper function to direct input to correct wrapper function
-
     string result;
 
     bool is_s1_negative = (s1[0] == '-') ? true : false, 
