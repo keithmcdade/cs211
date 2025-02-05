@@ -9,7 +9,7 @@ int main() {
 
     if ((i * i) / i != i)
         cout << "Error: integer overflow occured when attempting to square " << i << ". " << endl 
-             << "A perfect square with the two right most digits being odd does not exist." << endl;
+             << "A perfect square with the two right most digits being odd could not be found." << endl;
     
     return 0;
 
