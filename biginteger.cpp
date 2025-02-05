@@ -3,10 +3,10 @@
 using namespace std;
 
 bool valid(string s);
+string add(string s1, string s2, bool add);
 string add(string s1, string s2);
-string add_negative(string s1, string s2);
-string subtract(string s1, string s2);
-string calculate(string s1, string s2, bool add);
+string one_negative(string s1, string s2);
+string both_negative(string s1, string s2);
 
 int main () {
 
@@ -39,65 +39,12 @@ bool valid(string s) {
     if (found != 0 && s.compare("0") != 0) return false;
 
     found = s.rfind("-");
-    if ((found != 0 && found != string::npos) || s.compare("-0") == 0) return false;
+    if ((found != 0 && found != string::npos) || s.compare("-0") == 0 || s.compare("-") == 0) return false;
 
     return true;
 }
 
-string add(string s1, string s2) {
-    // wrapper function to direct input to correct wrapper function
-    string result;
-
-    bool is_s1_negative = (s1[0] == '-') ? true : false, 
-         is_s2_negative = (s2[0] == '-') ? true : false;
-
-    if (is_s1_negative && is_s2_negative) result = add_negative(s1, s2); // both numbers negative
-    else if (is_s1_negative || is_s2_negative) result = (is_s1_negative) ? subtract(s2, s1) : subtract(s1, s2); // one number negative 
-    else result = calculate(s1, s2, true); // both numbers positive
-    
-    return result;
-}
-
-string add_negative(string s1, string s2) {
-    // wrapper function for calling calculate() on 2 negative numbers
-    string result;
-        
-    s1.erase(0, 1);
-    s2.erase(0, 1);
-    
-    result = calculate(s1, s2, true);
-    result.insert(0, 1, '-');
-
-    return result;
-
-}
-
-string subtract(string s1, string s2) {
-    // wrapper function for calling calculate() on 1 negative and 1 positive number
-    string result;
-    s2.erase(0, 1);
-
-    // check if negative number is larger, result will be negative if true
-    bool is_negative;
-    if (s2.length() == s1.length()) is_negative = (s2[0] > s1[0]) ? true : false;
-    else is_negative = (s2.length() > s1.length()) ? true : false;
-
-    // if both numbers are the same just return 0
-    if (s1.compare(s2) == 0) return "0";
-
-    // swap if s2 is larger than s1
-    if (is_negative) swap(s1, s2);
-    result = calculate(s1, s2, false);
-    
-    // remove leading zeros
-    result.erase(0, result.find_first_not_of('0'));
-    
-    if (is_negative) result.insert(0, 1, '-');
-
-    return result;
-}
-
-string calculate(string s1, string s2, bool add) {
+string add(string s1, string s2, bool add) {
 
     string result;
 
@@ -133,4 +80,56 @@ string calculate(string s1, string s2, bool add) {
     else if (carry == 1) result = to_string(carry) + result;
 
     return result;
+}
+
+string add(string s1, string s2) {
+    // wrapper function to direct input to correct wrapper function
+    string result;
+
+    bool is_s1_negative = (s1[0] == '-') ? true : false, 
+         is_s2_negative = (s2[0] == '-') ? true : false;
+
+    if (is_s1_negative && is_s2_negative) result = both_negative(s1, s2); // both numbers negative
+    else if (is_s1_negative || is_s2_negative) result = (is_s1_negative) ? one_negative(s2, s1) : one_negative(s1, s2); // one number negative 
+    else result = add(s1, s2, true); // both numbers positive
+    
+    return result;
+}
+
+string one_negative(string s1, string s2) {
+    // wrapper function for calling add() on 1 negative and 1 positive number
+    string result;
+    s2.erase(0, 1);
+
+    // check if negative number is larger, result will be negative if true
+    bool is_negative;
+    if (s2.length() == s1.length()) is_negative = (s2[0] > s1[0]) ? true : false;
+    else is_negative = (s2.length() > s1.length()) ? true : false;
+
+    // if both numbers are the same just return 0
+    if (s1.compare(s2) == 0) return "0";
+
+    // swap if s2 is larger than s1
+    if (is_negative) swap(s1, s2);
+    result = add(s1, s2, false);
+    
+    // remove leading zeros
+    result.erase(0, result.find_first_not_of('0'));
+    
+    if (is_negative) result.insert(0, 1, '-');
+    return result;
+}
+
+string both_negative(string s1, string s2) {
+    // wrapper function for calling add() on 2 negative numbers
+    string result;
+        
+    s1.erase(0, 1);
+    s2.erase(0, 1);
+    
+    result = add(s1, s2, true);
+    result.insert(0, 1, '-');
+
+    return result;
+
 }
