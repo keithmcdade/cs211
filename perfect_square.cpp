@@ -15,9 +15,10 @@ int main() {
 
 }
 
-// output:       -2147479015
-// 46341^2:       2147488281 (value for i * i that caused overflow)
-// max int size:  2147483648
+// output of i * i: -2147479015
+// value of i:            46341
+// 46341^2:          2147488281 (value for i * i that caused overflow)
+// max int size:     2147483648
 
 // 46341^2 - max int size:
 // 4633
