@@ -1,6 +1,4 @@
 #include <iostream>
-#include <string>
-#include <regex>
 #include "biginteger.h"
 using namespace std;
 
@@ -77,10 +75,12 @@ string add_negative(string s1, string s2) {
 string subtract(string s1, string s2) {
     // wrapper function for calling calculate() on 1 negative and 1 positive number
     string result;
+    s2.erase(0, 1);
 
     // check if negative number is larger, result will be negative if true
-    bool is_negative = (s2.length() > s1.length()) ? true : false;
-    s2.erase(0, 1);
+    bool is_negative;
+    if (s2.length() == s1.length()) is_negative = (s2[0] > s1[0]) ? true : false;
+    else is_negative = (s2.length() > s1.length()) ? true : false;
 
     // if both numbers are the same just return 0
     if (s1.compare(s2) == 0) return "0";
