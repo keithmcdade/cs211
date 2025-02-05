@@ -29,7 +29,7 @@ int main () {
 
 bool valid(string s) {
     // check length is <= 100
-    if ((s[0] == '-' && s.length() > 101) || s.length() > 100) return false;
+    if ((s[0] == '-' && s.length() > 101) || s[0] != '-' && s.length() > 100) return false;
 
     // return false if number contains invalid characters or leading zeros
     size_t found = s.find_first_not_of("-0123456789");
