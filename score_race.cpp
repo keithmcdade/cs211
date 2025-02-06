@@ -2,13 +2,15 @@
 #include <iomanip>
 using namespace std;
 
-void insert_team(string &teams, char team);
-
 struct Team {
     char name;
     int members = 0;
     double score = 0;
 };
+
+void insert_team(string &team_names, char team);
+void create_teams(string input, string &team_names, Team teams[]);
+bool check_size(string team_names, Team teams[], int member_count);
 
 int main() {
     
@@ -17,7 +19,6 @@ int main() {
     
     cout << "Enter a string of only uppercase letters: ";
 
-label:
     while (cin >> input && input.compare("done") != 0) {
 
         Team teams[26];
@@ -27,41 +28,26 @@ label:
         
         if (input.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos) {
             cout << "Invalid character sequence, please try again: ";
-            goto label;
+            continue;
         }
 
-        for (int i = 0; i < input.length(); i++) {
-            
-            if (team_names.find(input[i]) == string::npos) {
-                insert_team(team_names, input[i]);
-            }
-
-            teams[input[i] - 'A'].name = input[i];
-            teams[input[i] - 'A'].members += 1;
-            teams[input[i] - 'A'].score += i + 1;
-        }
+        create_teams(input, team_names, teams);
 
         int member_count = teams[team_names[0] - 'A'].members;
-
-
-        for (int i = 0; i < team_names.length(); i++) {
-            if (teams[team_names[i] - 'A'].members != member_count) {
-                cout << "There must be an equal number of members for each team, please try again: ";
-                goto label; 
-            }
-        }
-
-        cout << "There are " << team_names.length() << " teams." << endl << endl;
-        cout << "Each team has " << member_count << " runners." << endl << endl;
-        cout << setw(WIDTH) << left;
-        cout << "Team" << "Score" << endl;
+        if (!check_size(team_names, teams, member_count)) continue;
+        
+        cout << "There are " << team_names.length() << " teams." << endl << endl <<
+                "Each team has " << member_count << " runners." << endl << endl <<
+                setw(WIDTH) << left <<
+                "Team" << "Score" << endl;
 
         for (int i = 0; i < team_names.length(); i++) {
 
-            teams[team_names[i] - 'A'].score /= teams[team_names[i] - 'A'].members;
+            Team team = teams[team_names[i] - 'A'];
+            team.score /= team.members;
 
-            cout << setw(WIDTH) << left << setprecision(3);
-            cout << team_names[i] << teams[team_names[i] - 'A'].score << endl;
+            cout << setw(WIDTH) << left << setprecision(3) << 
+                    team_names[i] << team.score << endl;
         }
 
         cout << endl << "Enter a string of only uppercase letters: ";
@@ -69,17 +55,40 @@ label:
     return 0;
 }
 
-void insert_team(string &teams, char team) {
-    if (teams.length() == 0) teams += team;
+void insert_team(string &team_names, char team) {
+    if (team_names.length() == 0) team_names += team;
     else {
-        for (int j = 0; j < teams.length(); j++) {
-            if (team < teams[j]) {
+        for (int j = 0; j < team_names.length(); j++) {
+            if (team < team_names[j]) {
                 string s(1, team);
-                teams.insert(j, s);
+                team_names.insert(j, s);
                 break;
             }
-            else teams += team;
+            else team_names += team;
             break;
         }
     }
+}
+
+void create_teams(string input, string &team_names, Team teams[]) {
+
+    for (int i = 0; i < input.length(); i++) {
+
+        if (team_names.find(input[i]) == string::npos) insert_team(team_names, input[i]);
+
+        Team *team = &teams[input[i] - 'A'];
+        team->name = input[i];
+        team->members += 1;
+        team->score += i + 1;
+    }            
+}
+
+bool check_size(string team_names, Team teams[], int member_count) {
+    for (int i = 0; i < team_names.length(); i++) {
+            if (teams[team_names[i] - 'A'].members != member_count) {
+                cout << "There must be an equal number of members for each team, please try again: ";
+                return false; 
+            }
+        }
+    return true;
 }
