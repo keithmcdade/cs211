@@ -70,7 +70,7 @@ string add(string s1, string s2, bool add) {
         // for adding, keep last digit of sum, 1 will carry over
         sum = (!add && sum < 0) ? sum + 10 : sum % 10;
         // append sum to left side of result
-        result = to_string(sum) + result;
+        result.insert(0, to_string(sum));
 
         p1--; p2--;
     }
