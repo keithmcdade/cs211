@@ -1,11 +1,14 @@
 #include <iostream>
 #include <iomanip>
-#include <regex>
 using namespace std;
 
-bool valid(string s);
-void fill_teams(string input, string &teams, int members[], double scores[]);
 void insert_team(string &teams, char team);
+
+struct Team {
+    char name;
+    int members = 0;
+    double score = 0;
+};
 
 int main() {
     
@@ -17,58 +20,53 @@ int main() {
 label:
     while (cin >> input && input.compare("done") != 0) {
 
-        int member_count = 0, members[26] = {0};
-        double scores[26] = {0};
-        string teams = "";
-        
+        Team teams[26];
+        string team_names = "";
+
         cout << endl;
         
-        if (!valid(input)) {
+        if (input.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos) {
             cout << "Invalid character sequence, please try again: ";
             goto label;
         }
 
         for (int i = 0; i < input.length(); i++) {
-            if (teams.find(input[i]) == string::npos) {
-                insert_team(teams, input[i]);
+            
+            if (team_names.find(input[i]) == string::npos) {
+                insert_team(team_names, input[i]);
             }
-            members[input[i] - 'A'] += 1;
-            scores[input[i] - 'A'] += i + 1;
+
+            teams[input[i] - 'A'].name = input[i];
+            teams[input[i] - 'A'].members += 1;
+            teams[input[i] - 'A'].score += i + 1;
         }
 
-        member_count = members[teams[0] - 'A'];
+        int member_count = teams[team_names[0] - 'A'].members;
 
-        for (int i = 0; i < teams.length(); i++) {
-            if (members[teams[i] - 'A'] != member_count) {
+
+        for (int i = 0; i < team_names.length(); i++) {
+            if (teams[team_names[i] - 'A'].members != member_count) {
                 cout << "There must be an equal number of members for each team, please try again: ";
                 goto label; 
             }
         }
 
-        cout << "There are " << teams.length() << " teams." << endl << endl;
+        cout << "There are " << team_names.length() << " teams." << endl << endl;
         cout << "Each team has " << member_count << " runners." << endl << endl;
         cout << setw(WIDTH) << left;
         cout << "Team" << "Score" << endl;
 
-        for (int i = 0; i < teams.length(); i++) {
+        for (int i = 0; i < team_names.length(); i++) {
 
-            scores[teams[i] - 'A'] /= members[teams[i] - 'A'];
+            teams[team_names[i] - 'A'].score /= teams[team_names[i] - 'A'].members;
 
             cout << setw(WIDTH) << left << setprecision(3);
-            cout << teams[i] << scores[teams[i] - 'A'] << endl;
+            cout << team_names[i] << teams[team_names[i] - 'A'].score << endl;
         }
 
         cout << endl << "Enter a string of only uppercase letters: ";
     }
     return 0;
-}
-
-bool valid(string s) {
-    return true;
-}
-
-void fill_teams(string input, string &teams, int members[], double scores[]) {
-    return;
 }
 
 void insert_team(string &teams, char team) {
