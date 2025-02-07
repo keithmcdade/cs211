@@ -5,7 +5,7 @@ using namespace std;
 struct Team {
     char name;
     int members = 0;
-    double score = 0;
+    int score = 0;
 };
 
 void insert_team(string &team_names, char team);
@@ -44,10 +44,9 @@ int main() {
         for (int i = 0; i < team_names.length(); i++) {
 
             Team team = teams[team_names[i] - 'A'];
-            team.score /= team.members;
 
             cout << setw(WIDTH) << left << setprecision(3) << 
-                    team_names[i] << team.score << endl;
+                    team_names[i] << (double)team.score / team.members << endl;
         }
 
         cout << endl << "Enter a string of only uppercase letters: ";
