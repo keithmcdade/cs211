@@ -2,94 +2,82 @@
 #include <iomanip>
 using namespace std;
 
-class Team {
-    public:
-        static int team_count;
-        static int team_size;
-        int members = 0;
-        int score = 0;
-        char name;
+const int MAX_TEAMS = 26;
+
+struct Team {
+    inline static int team_count;
+    inline static int team_size;
+    int members = 0;
+    int score = 0;
+    char name;
 };
 
-void insert_team(string &team_names, char team);
-void create_teams(string input, string &team_names, Team teams[]);
-bool check_size(string team_names, Team teams[], int member_count);
+void create_teams(string input, Team teams[]);
+bool check_size(Team (&teams)[MAX_TEAMS]);
 
 int main() {
     
     const int WIDTH = 6;
     string input;
     
-    cout << "Enter a string of only uppercase letters: ";
+    cout << "Enter a string of only uppercase letters or 'done' to exit: ";
 
     while (cin >> input && input.compare("done") != 0) {
 
-        Team teams[26];
-        string team_names = "";
+        Team teams[MAX_TEAMS];
 
         cout << endl;
-        
+    
         if (input.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos) {
             cout << "Invalid character sequence, please try again: ";
             continue;
         }
 
-        create_teams(input, team_names, teams);
-
-        int member_count = teams[team_names[0] - 'A'].members;
-        if (!check_size(team_names, teams, member_count)) continue;
+        create_teams(input, teams);
+        if (!check_size(teams)) continue;
         
-        cout << "There are " << team_names.length() << " teams." << endl << endl <<
-                "Each team has " << member_count << " runners." << endl << endl <<
+        cout << "There are " << Team::team_count << " teams." << endl << endl <<
+                "Each team has " << Team::team_size << " runners." << endl << endl <<
                 setw(WIDTH) << left <<
                 "Team" << "Score" << endl;
 
-        for (int i = 0; i < team_names.length(); i++) {
+        for (Team team : teams) {
 
-            Team team = teams[team_names[i] - 'A'];
-
+            if (team.members == 0) continue;
             cout << setw(WIDTH) << left << setprecision(3) << 
-                    team_names[i] << (double)team.score / team.members << endl;
+                    team.name << (double)team.score / team.members << endl;
+
+            Team::team_count = 0;
+            Team::team_size = 0;
         }
 
-        cout << endl << "Enter a string of only uppercase letters: ";
+        cout << endl << "Enter a string of only uppercase letters or 'done' to exit: ";
     }
     return 0;
 }
 
-void insert_team(string &team_names, char team) {
-    if (team_names.length() == 0) team_names += team;
-    else {
-        for (int j = 0; j < team_names.length(); j++) {
-            if (team < team_names[j]) {
-                string s(1, team);
-                team_names.insert(j, s);
-                break;
-            }
-            else team_names += team;
-            break;
-        }
-    }
-}
-
-void create_teams(string input, string &team_names, Team teams[]) {
+void create_teams(string input, Team teams[]) {
 
     for (int i = 0; i < input.length(); i++) {
 
-        if (team_names.find(input[i]) == string::npos) insert_team(team_names, input[i]);
-
         Team *team = &teams[input[i] - 'A'];
+
+        if (team->members == 0) Team::team_count++;
+
         team->name = input[i];
         team->members += 1;
         team->score += i + 1;
+
+        if (team->members > Team::team_size) Team::team_size = team->members;
     }            
 }
 
-bool check_size(string team_names, Team teams[], int member_count) {
-    for (int i = 0; i < team_names.length(); i++) {
-        if (teams[team_names[i] - 'A'].members != member_count) {
+bool check_size(Team (&teams)[MAX_TEAMS]) {
+    for (Team team : teams) {
+        if (team.members == 0) continue;
+        if (team.members != Team::team_size) {
             cout << "There must be an equal number of members for each team, please try again: ";
-            return false; 
+            return false;
         }
     }
     return true;
