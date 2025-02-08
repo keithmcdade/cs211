@@ -22,13 +22,12 @@ int main() {
     
     while (true) {
 
+        Team teams[MAX_TEAMS];
         Team::team_count = 0;
         Team::team_size = 0;
 
         cout << "Enter a string of only uppercase letters or 'done' to exit: ";
         if (cin >> input && input.compare("done") == 0) return 0;
-
-        Team teams[MAX_TEAMS];
     
         if (input.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos) {
             cout << endl << "Invalid character sequence, please try again." << endl;
