@@ -8,23 +8,22 @@ struct Team {
     inline static int team_count;
     inline static int team_size;
     int members = 0;
-    int score = 0;
+    double score = 0;
     char name;
 };
 
 void create_teams(string input, Team teams[]);
 bool check_size(Team (&teams)[MAX_TEAMS]);
+void print_winner(Team (&teams)[MAX_TEAMS]);
 
 int main() {
-    
-    const int WIDTH = 6;
-    string input;
     
     while (true) {
 
         Team teams[MAX_TEAMS];
         Team::team_count = 0;
         Team::team_size = 0;
+        string input;
 
         cout << "Enter a string of only uppercase letters or 'done' to exit: ";
         if (cin >> input && input.compare("done") == 0) return 0;
@@ -36,18 +35,8 @@ int main() {
 
         create_teams(input, teams);
         if (!check_size(teams)) continue;
-        
-        cout << endl << "There are " << Team::team_count << " teams." << endl << endl <<
-                "Each team has " << Team::team_size << " runners." << endl << endl <<
-                setw(WIDTH) << left <<
-                "Team" << "Score" << endl;
 
-        for (Team team : teams) {
-            if (team.members == 0) continue;
-            cout << setw(WIDTH) << left << setprecision(3) << 
-                    team.name << (double)team.score / team.members << endl;
-        }
-        cout << endl;
+        print_winner(teams);
     }
     return 0;
 }
@@ -76,4 +65,31 @@ bool check_size(Team (&teams)[MAX_TEAMS]) {
         }
     }
     return true;
+}
+
+void print_winner(Team (&teams)[MAX_TEAMS]) {
+
+    const int WIDTH = 6;
+    double high_score = 0;
+    Team winner;
+
+    cout << endl << "There are " << Team::team_count << " teams." << endl << endl <<
+            "Each team has " << Team::team_size << " runners." << endl << endl <<
+            setw(WIDTH) << left <<
+            "Team" << "Score" << endl;
+
+    for (Team team : teams) {
+        
+        if (team.members == 0) continue;
+        team.score = team.score / team.members;
+
+        if (team.score < high_score || high_score == 0) {
+            high_score = team.score;
+            winner = team;
+        }
+
+        cout << setw(WIDTH) << left << setprecision(3) << 
+                team.name << team.score << endl;
+    }
+    cout << endl << "The winning team is " << winner.name << " with a score of " << winner.score << endl << endl;
 }
