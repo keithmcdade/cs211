@@ -2,10 +2,13 @@
 #include <iomanip>
 using namespace std;
 
-struct Team {
-    char name;
-    int members = 0;
-    int score = 0;
+class Team {
+    public:
+        static int team_count;
+        static int team_size;
+        int members = 0;
+        int score = 0;
+        char name;
 };
 
 void insert_team(string &team_names, char team);
@@ -84,10 +87,10 @@ void create_teams(string input, string &team_names, Team teams[]) {
 
 bool check_size(string team_names, Team teams[], int member_count) {
     for (int i = 0; i < team_names.length(); i++) {
-            if (teams[team_names[i] - 'A'].members != member_count) {
-                cout << "There must be an equal number of members for each team, please try again: ";
-                return false; 
-            }
+        if (teams[team_names[i] - 'A'].members != member_count) {
+            cout << "There must be an equal number of members for each team, please try again: ";
+            return false; 
         }
+    }
     return true;
 }
