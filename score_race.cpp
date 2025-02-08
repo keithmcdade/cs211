@@ -20,38 +20,35 @@ int main() {
     const int WIDTH = 6;
     string input;
     
-    cout << "Enter a string of only uppercase letters or 'done' to exit: ";
+    while (true) {
 
-    while (cin >> input && input.compare("done") != 0) {
+        Team::team_count = 0;
+        Team::team_size = 0;
+
+        cout << "Enter a string of only uppercase letters or 'done' to exit: ";
+        if (cin >> input && input.compare("done") == 0) return 0;
 
         Team teams[MAX_TEAMS];
-
-        cout << endl;
     
         if (input.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZ") != string::npos) {
-            cout << "Invalid character sequence, please try again: ";
+            cout << endl << "Invalid character sequence, please try again." << endl;
             continue;
         }
 
         create_teams(input, teams);
         if (!check_size(teams)) continue;
         
-        cout << "There are " << Team::team_count << " teams." << endl << endl <<
+        cout << endl << "There are " << Team::team_count << " teams." << endl << endl <<
                 "Each team has " << Team::team_size << " runners." << endl << endl <<
                 setw(WIDTH) << left <<
                 "Team" << "Score" << endl;
 
         for (Team team : teams) {
-
             if (team.members == 0) continue;
             cout << setw(WIDTH) << left << setprecision(3) << 
                     team.name << (double)team.score / team.members << endl;
-
-            Team::team_count = 0;
-            Team::team_size = 0;
         }
-
-        cout << endl << "Enter a string of only uppercase letters or 'done' to exit: ";
+        cout << endl;
     }
     return 0;
 }
@@ -61,7 +58,6 @@ void create_teams(string input, Team teams[]) {
     for (int i = 0; i < input.length(); i++) {
 
         Team *team = &teams[input[i] - 'A'];
-
         if (team->members == 0) Team::team_count++;
 
         team->name = input[i];
@@ -76,7 +72,7 @@ bool check_size(Team (&teams)[MAX_TEAMS]) {
     for (Team team : teams) {
         if (team.members == 0) continue;
         if (team.members != Team::team_size) {
-            cout << "There must be an equal number of members for each team, please try again: ";
+            cout << endl << "There must be an equal number of members for each team, please try again" << endl;
             return false;
         }
     }
