@@ -39,7 +39,7 @@ int main() {
             "Each team has " << team_size << " runners." << endl << endl << setw(WIDTH) << 
             left << "Team" << "Score" << endl;       
 
-        // iterate through teams add team to winners if score == best_score, clear other winners if better
+        // iterate through teams add team to winners if score <= best_score, clear other winners if better
         for (int i = 0; i < MAX_TEAMS; i++) {
 
             if (teams[i][0] == 0) continue;
@@ -54,12 +54,8 @@ int main() {
             cout << setw(WIDTH) << left << setprecision(3) << 
                 (char)(i + 'A') << score << endl;
         }
-
-        // print results
-        cout << endl;
-        for (int i = 0; i < winners.length(); i++) 
-            cout << "The winning team is " << winners[i] << " with a score of " << best_score << endl;
-        cout << endl;
+        // print results - in case of tie winner is team with lowest scoring runner
+        cout << endl << "The winning team is " << input[input.find_first_of(winners)] << " with a score of " << best_score << endl;
     }
     return 0;
 }
@@ -68,7 +64,7 @@ bool check_size(int teams[][2], int n, int team_size) {
     for (int i = 0; i < n; i++) {
         if (teams[i][0] == 0) continue;
         if (teams[i][0] != team_size) {
-            cout << endl << "There must be an equal number of members for each team, please try again" << endl;
+            cout << endl << "There must be an equal number of members for each team, please try again" << endl << endl;
             return false;
         }
     }
