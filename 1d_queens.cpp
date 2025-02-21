@@ -20,7 +20,7 @@ nr:
     // if row == size of board there is no valid spot in that col, go back one col
     if (q[c] == N) goto backtrack;
     // row test + diagonal test
-    for (int i = 0; i < c; i++) 
+    for (int i = 0; i < c; i++)
         // row test | down and left test | up and left test
         // down and left: row # + col #; up and left: row # - col #
         // go back to new row if test fails
@@ -41,11 +41,11 @@ print:
     cout << "---------------" << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            if (q[i] == j) cout << 1 << " ";
-            else cout << 0 << " ";
+            if (q[i] == j) cout << 'Q' << ' ';
+            else cout << '#' << ' ';
         }
         cout << endl;
     }
-    
+
     goto backtrack;
 }
