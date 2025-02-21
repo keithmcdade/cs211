@@ -12,18 +12,14 @@ nc:
     // iterate c, if c == size of board print solution
     c++;
     if (c == N) goto print;
-    // enables use of q[c]++ at label nr without skipping 0
     q[c] = -1;
 
 nr:
     q[c]++;
     // if row == size of board there is no valid spot in that col, go back one col
     if (q[c] == N) goto backtrack;
-    // row test + diagonal test
     for (int i = 0; i < c; i++)
-        // row test | down and left test | up and left test
         // down and left: row # + col #; up and left: row # - col #
-        // go back to new row if test fails
         if (q[i] == q[c] || q[i] + i == q[c] + c || q[i] - i == q[c] - c) goto nr;
 
     goto nc;
