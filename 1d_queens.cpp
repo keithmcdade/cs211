@@ -22,7 +22,7 @@ nr:
     // row test + diagonal test
     for (int i = 0; i < c; i++) 
         // row test | down and left test | up and left test
-        // down and left: row # col #; up and left: row # - col #
+        // down and left: row # + col #; up and left: row # - col #
         // go back to new row if test fails
         if (q[i] == q[c] || q[i] + i == q[c] + c || q[i] - i == q[c] - c) goto nr;
 
