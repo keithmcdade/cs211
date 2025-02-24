@@ -20,7 +20,7 @@ nr:
     if (q[c] == N) goto backtrack;
     for (int i = 0; i < c; i++)
         // down and left: row # + col #; up and left: row # - col #
-        if (q[i] == q[c] || q[i] + i == q[c] + c || q[i] - i == q[c] - c) goto nr;
+        if (q[i] == q[c] || c - i == abs(q[c] - q[i])) goto nr;
 
     goto nc;
 
