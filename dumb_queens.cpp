@@ -53,7 +53,7 @@ void print(int q[], int n, int &solutions) {
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            if (q[j] == i) cout << '1' << ' ';
+            if (q[i] == j) cout << '1' << ' ';
             else cout << '0' << ' ';
         }
         cout << endl;

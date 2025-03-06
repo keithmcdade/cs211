@@ -37,7 +37,7 @@ print:
     cout << "---------------" << endl;
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
-            if (q[i] == j) cout << 'Q' << ' ';
+            if (q[j] == i) cout << 'Q' << ' ';
             else cout << '#' << ' ';
         }
         cout << endl;
