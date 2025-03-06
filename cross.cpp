@@ -65,8 +65,8 @@ void print(int q[], int n, int solutions) {
     cout << "------------" << endl;
 
     for (int i = 0; i < n; i++) {
-        if (i == 0 || i == 6) cout << "# " << q[i] << " ";
-        else if (i == 1 || i == 7) cout << q[i] << " #" << endl;
+        if (i == 0 || i == 6) cout << "  " << q[i] << " ";
+        else if (i == 1 || i == 7) cout << q[i] << "  " << endl;
         else if (i == 5) cout << q[i] << endl;
         else cout << q[i] << " ";
     }
