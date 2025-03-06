@@ -61,18 +61,13 @@ bool ok(int q[], int c) {
 
 void print(int q[], int n, int solutions) {
 
-    int x = 0;
-
     cout << endl << "solution #" << solutions << ":" << endl;
-    cout << "---------------" << endl;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            if (i % 2 == 0 && (j == 0 || j == 3)) cout << "# ";
-            else {
-                cout << q[x] << " ";
-                x++;
-            }
-        }
-        cout << endl;
+    cout << "------------" << endl;
+
+    for (int i = 0; i < n; i++) {
+        if (i == 0 || i == 6) cout << "# " << q[i] << " ";
+        else if (i == 1 || i == 7) cout << q[i] << " #" << endl;
+        else if (i == 5) cout << q[i] << endl;
+        else cout << q[i] << " ";
     }
 }
